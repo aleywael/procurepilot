@@ -1,0 +1,14 @@
+{% extends 'base.html' %}{% block content %}
+<div class="top"><div><h1>Procurement Decision Workbench</h1><p>Trusted data → prioritized evidence → AI-assisted investigation → human decision → outcome.</p></div>{% if import_id %}<span class="pill">Dataset #{{import_id}}</span>{% endif %}</div>
+{% if not import_id %}<div class="empty"><h2>No dataset loaded</h2><p>Load the included demo dataset or upload your own CSV/XLSX export.</p><a class="btn" href="/imports">Go to Imports</a></div>{% else %}
+<div class="grid4">
+<div class="card metric"><span>Overall OTD</span><strong>{{kpi.get('overall_otd','—')}}{% if kpi.get('overall_otd') is not none %}%{% endif %}</strong><small>{{kpi.get('otd_sample',0)}} eligible deliveries</small></div>
+<div class="card metric"><span>Overdue open lines</span><strong>{{kpi.get('overdue_lines',0)}}</strong><small>Exposure {{'{:,.0f}'.format(kpi.get('overdue_exposure',0))}}</small></div>
+<div class="card metric"><span>Average delay</span><strong>{{kpi.get('avg_positive_delay','—')}} d</strong><small>Positive-delay calculation</small></div>
+<div class="card metric"><span>ML risk model</span><strong>{{'Ready' if model.get('status')=='READY' else 'Unavailable'}}</strong><small>{% if model.get('status')=='READY' %}{{model.get('training_rows')}} historical rows{% else %}Needs richer history{% endif %}</small></div>
+</div>
+<h2>Analysis readiness</h2><div class="grid3">{% for name,r in readiness.items() %}<div class="card"><div class="row"><strong>{{name.replace('_',' ').title()}}</strong><span class="badge {{r.status|lower}}">{{r.status}}</span></div><div class="progress"><i style="width:{{r.coverage}}%"></i></div><small>{{r.coverage}}% complete evidence · {{r.message}}</small></div>{% endfor %}</div>
+<div class="split"><section><div class="section-head"><h2>What needs attention</h2><a href="/issues">View all</a></div>{% for e in exceptions %}<a class="issue" href="/issues/{{e.id}}"><span class="sev {{e.severity|lower}}">{{e.severity}}</span><div><strong>{{e.title}}</strong><small>{{e.explanation}}</small></div><b>›</b></a>{% else %}<div class="card">No active issues detected.</div>{% endfor %}</section>
+<section><div class="section-head"><h2>What changed</h2></div><div class="card change"><div><strong>{{changes.new|length}}</strong><span>New</span></div><div><strong>{{changes.persistent|length}}</strong><span>Persistent</span></div><div><strong>{{changes.resolved|length}}</strong><span>Resolved</span></div></div>
+<h2>Decision reviews</h2>{% for d in decisions %}<div class="card mini"><strong>{{d.decision_text}}</strong><small>{{d.status}}{% if d.outcome_status %} · {{d.outcome_status}}{% endif %}</small></div>{% else %}<div class="card mini">No decisions recorded yet.</div>{% endfor %}</section></div>
+{% endif %}{% endblock %}

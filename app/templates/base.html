@@ -1,0 +1,12 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ProcurePilot</title><link rel="stylesheet" href="/static/app.css"></head><body>
+<div class="layout"><aside><div class="brand"><div class="logo">P</div><div><strong>ProcurePilot</strong><small>AI Procurement DSS</small></div></div><nav>
+<a class="{{'active' if page=='overview' else ''}}" href="/">Overview</a>
+<a class="{{'active' if page=='issues' else ''}}" href="/issues">Priority Issues</a>
+<a class="{{'active' if page=='suppliers' else ''}}" href="/suppliers">Suppliers</a>
+<a class="{{'active' if page=='decisions' else ''}}" href="/decisions">Decisions & Outcomes</a>
+<a class="{{'active' if page=='imports' else ''}}" href="/imports">Imports</a>
+<a class="{{'active' if page=='ai' else ''}}" href="/ai">AI Analyst</a>
+<a class="{{'active' if page=='admin' else ''}}" href="/admin">Admin</a>
+</nav><div class="aside-note">Prototype mode<br><span>Human decision authority preserved</span></div></aside>
+<main>{% block content %}{% endblock %}</main></div>
+<script src="/static/app.js"></script></body></html>
